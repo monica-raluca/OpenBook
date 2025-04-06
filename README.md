@@ -1,5 +1,7 @@
-# OpenBook
-
+# 📚🌟 OpenBook 🌟📚
+#### Birladeanu Raluca-Monica 335CA
+> An infinite little library, your very own **pocket-sized story companion**.  Read a thousand books, live a thousand lives with OpenBook!~ 🌸
+![OpenBook Image](Images/Fancy_Render_OpenBook.png)
 ## Block Diagram
 ```mermaid
 graph TD
