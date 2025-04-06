@@ -70,34 +70,100 @@ graph TD
 |XC6220A331MR-G | LDO Voltage Regulator | https://eu.mouser.com/ProductDetail/Torex-Semiconductor/XC6220A331MR-G?qs=AsjdqWjXhJ8ZSWznL1J0gg%3D%3D | https://eu.mouser.com/datasheet/2/760/xc6220-3371556.pdf
 
 ## Hardware components
+- ESP32-C6-WROOM-1-N8 Microcontroller
 
-## ESP32-C6-WROOM-1-N8 Pin Mapping
+### Communication interfaces
+
+| Communication interface | Connected Components |
+|--------------|----------------------|
+| I2C        | RTC, BME688, Battery Level     |
+| SPI        | SD Card, E-Paper Display, NOR Flash     |
+| USB        | USB C Connector / Power     |
+
+### ESP32-C6-WROOM-1-N8 Pin Mapping
 
 | ESP32 Pin | Signal | Purpose |
 |--------------|----------------------|---------|
 | IO0        | INT_RTC     | RTC communication |
 | IO1        | 32KHZ     | RTC communication |
-| IO2        | MISO     | SD Card, Flash |
+| IO2        | MISO     | SD Card, NOR Flash |
 | IO3        | EPD_BUSY     | EPD status |
 | IO4        | SS_SD | SD Card |
 | IO5        | EPD_DC | EPD Data/Command |
-| IO6        | SCK  | BME688, SD Card, Flash |
-| IO7        | MOSI   | SD Card, Flash, EPD |
+| IO6        | SCK  | BME688, SD Card, NOR Flash |
+| IO7        | MOSI   | SD Card, NOR Flash, EPD |
 | IO8        | GPIO8 | SD card select |
-| IO9        | IO/BOOT   | Data in from SD |
-| IO10       | EPD_CS   | Data out to SD |
-| IO11       | FLASH_CS    | Clock |
-| IO12       | USB_D-| Display chip select |
-| IO13       | USB_D+        | Status LED |
-| IO15       | IO/CHANGE   | Battery level sensor |
-| IO16       | TX   | Battery level sensor |
-| IO17       | RX   | Battery level sensor |
-| IO18       | RTC_RST   | Battery level sensor |
-| IO19       | I2C_PW   | Battery level sensor |
-| IO20       | EPD_3V3_C   | Battery level sensor |
-| IO21       | SDA   | Battery level sensor |
-| IO22       | SCL   | Battery level sensor |
-| IO23       | EPD_RST   | Battery level sensor |
+| IO9        | IO/BOOT   | Boot button |
+| IO10       | EPD_CS   | EPD chip select|
+| IO11       | FLASH_CS    | NOR Flash chip select |
+| IO12       | USB_D-| USB communication |
+| IO13       | USB_D+        | USB communication |
+| IO15       | IO/CHANGE   | Button change |
+| IO16       | TX   | Transmit |
+| IO17       | RX   | Receive |
+| IO18       | RTC_RST   | RTC reset |
+| IO19       | I2C_PW   | BME688 power management |
+| IO20       | EPD_3V3_C   | EPD |
+| IO21       | SDA   | RTC, BME688, Battery Level (I2C data) |
+| IO22       | SCL   | RTC, BME688, Battery Level (I2C clock) |
+| IO23       | EPD_RST   | EPD reset |
+
+- Real-Time Clock Module (RTC)
+  - A DS3231SN RTC module
+  - It communicates through I2C with the microcontroller
+  - Pin connections:
+      - SCL -> IO22
+      - SDA -> IO21
+      - RTC_RST -> IO18
+      - 32KHZ -> IO1
+      - INT_RTC -> IO0
+- SD Card
+  - It communicates through SPI
+  - Pin connections:
+    - MISO - IO2
+    - SCK - IO6
+    - MOSI - IO7
+    - SS_SD - IO4
+- E-Paper Display (EPD)
+  - It communicates through SPI
+  - Pin connections:
+    - EPD_CS -> IO10
+    - EPD_DC -> IO5
+    - EPD_RST -> IO23
+    - EPD_BUSY -> IO3
+    - MOSI, SCK -> shared with SD
+- Environmental Sensor
+  - BME688 sensor
+  - It communicates through I2C
+  - Pin connections:
+      - SCL -> IO22
+      - SDA -> IO21
+- Li-Po Battery Charging Controller
+  - Battery Charge Level
+    - It communicates through I2C
+    - Pin connections:
+        - SCL -> IO22
+        - SDA -> IO21
+- LDO Voltage Regulator
+  - Lowers the 5V to 3.3V for the microcontroller and the attached modules
+- SPI ESD Protection Lines
+- NOR Flash 64MB
+  - It communicates through SPI
+  - Pin connections:
+    - FLASH_CS -> IO11
+    - SCK, MOSI, MISO
+- USB
+  - USB_D- -> IO12
+  - USB_D+ -> IO13
+- Buttons for user input
+  - RESET -> EN
+  - IO/BOOT -> IO9
+  - IO/CHANGE -> IO15
+- Qwiic / Stemma QT Connector
+  - It communicates through I2C
+  - SCL, SDA
+
+
 
 
 
